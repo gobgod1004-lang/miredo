@@ -1,20 +1,21 @@
-//\app\api\data
+// /app/api/data/route.js
 import { NextResponse } from "next/server";
 
 let sensorData = {
   temperature: 0,
   humidity: 0,
-  red: false,
-  green: false,
-  blue: false,
+  analog: 0, // ✅ 아날로그 데이터 추가
 };
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { temperature, humidity } = body;
+    const { temperature, humidity, analog } = body;
+
     if (typeof temperature === "number") sensorData.temperature = temperature;
     if (typeof humidity === "number") sensorData.humidity = humidity;
+    if (typeof analog === "number") sensorData.analog = analog;
+
     return NextResponse.json({ success: true, sensorData });
   } catch (err) {
     return NextResponse.json({ error: "Invalid data" }, { status: 400 });
