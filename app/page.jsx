@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [data, setData] = useState({ temperature: 0, humidity: 0, analog: 0 });
-  const [glitchActive, setGlitchActive] = useState(false);
 
   async function fetchData() {
     try {
@@ -12,12 +11,6 @@ export default function HomePage() {
       if (!res.ok) throw new Error("Failed to fetch");
       const json = await res.json();
       setData(json);
-      
-      // Random glitch effect
-      if (Math.random() > 0.7) {
-        setGlitchActive(true);
-        setTimeout(() => setGlitchActive(false), 200);
-      }
     } catch (err) {
       console.error(err);
     }
@@ -32,259 +25,223 @@ export default function HomePage() {
   return (
     <main
       style={{
-        fontFamily: "'Courier New', monospace",
+        fontFamily: "'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive",
         padding: "2rem",
         textAlign: "center",
-        background: "#000000",
+        background: "linear-gradient(180deg, #87CEEB 0%, #4FB4E8 50%, #2E8BC0 100%)",
         minHeight: "100vh",
         position: "relative",
         overflow: "hidden",
-        filter: glitchActive ? "hue-rotate(180deg) brightness(1.5)" : "none",
-        transition: "filter 0.1s",
       }}
     >
-      {/* VHS scan lines */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px)",
-          pointerEvents: "none",
-          zIndex: 10,
-          animation: "scanline 8s linear infinite",
-        }}
-      />
-
-      {/* Static noise */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-          opacity: 0.08,
-          pointerEvents: "none",
-          animation: "noise 0.2s steps(10) infinite",
-        }}
-      />
-
-      {/* Flickering lights */}
+      {/* Bubbles everywhere! */}
       <div
         style={{
           position: "absolute",
           top: "10%",
-          left: "15%",
-          width: "3px",
-          height: "3px",
+          left: "10%",
+          width: "40px",
+          height: "40px",
           borderRadius: "50%",
-          background: "#ff0000",
-          boxShadow: "0 0 40px 10px #ff0000",
-          animation: "flicker 3s ease-in-out infinite",
+          background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(173,216,230,0.4))",
+          boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1)",
+          animation: "bubble-float1 6s ease-in-out infinite",
         }}
       />
       <div
         style={{
           position: "absolute",
-          top: "70%",
-          right: "20%",
-          width: "3px",
-          height: "3px",
+          top: "50%",
+          right: "15%",
+          width: "60px",
+          height: "60px",
           borderRadius: "50%",
-          background: "#ff0000",
-          boxShadow: "0 0 40px 10px #ff0000",
-          animation: "flicker 4s ease-in-out infinite 1s",
+          background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(173,216,230,0.4))",
+          boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1)",
+          animation: "bubble-float2 8s ease-in-out infinite",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: "20%",
+          left: "20%",
+          width: "50px",
+          height: "50px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(173,216,230,0.4))",
+          boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1)",
+          animation: "bubble-float3 7s ease-in-out infinite",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: "30%",
+          right: "30%",
+          width: "35px",
+          height: "35px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(173,216,230,0.4))",
+          boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1)",
+          animation: "bubble-float1 9s ease-in-out infinite 1s",
         }}
       />
 
       <style>
         {`
-          @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
+          @keyframes bubble-float1 {
+            0% { transform: translateY(0) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-100px) scale(1.1); opacity: 0.9; }
+            100% { transform: translateY(-200px) scale(0.8); opacity: 0; }
           }
-          
-          @keyframes flicker {
-            0%, 100% { opacity: 0.3; }
-            5%, 95% { opacity: 0.1; }
-            10%, 90% { opacity: 0.8; }
-            15%, 85% { opacity: 0.2; }
-            20%, 80% { opacity: 1; }
-            25%, 75% { opacity: 0.1; }
-            30%, 70% { opacity: 0.7; }
-            50% { opacity: 0.4; }
+          @keyframes bubble-float2 {
+            0% { transform: translateY(0) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-120px) scale(1.15); opacity: 0.9; }
+            100% { transform: translateY(-250px) scale(0.7); opacity: 0; }
           }
-          
-          @keyframes glitch {
-            0%, 100% { transform: translate(0); }
-            33% { transform: translate(-2px, 2px); }
-            66% { transform: translate(2px, -2px); }
+          @keyframes bubble-float3 {
+            0% { transform: translateY(0) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-90px) scale(1.05); opacity: 0.9; }
+            100% { transform: translateY(-180px) scale(0.9); opacity: 0; }
           }
-          
-          @keyframes noise {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-5%, -5%); }
-            20% { transform: translate(-10%, 5%); }
-            30% { transform: translate(5%, -10%); }
-            40% { transform: translate(-5%, 15%); }
-            50% { transform: translate(-10%, 5%); }
-            60% { transform: translate(15%, 0); }
-            70% { transform: translate(0, 10%); }
-            80% { transform: translate(-15%, 0); }
-            90% { transform: translate(10%, 5%); }
+          @keyframes wave {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
           }
-          
-          @keyframes blink-text {
-            0%, 49%, 100% { opacity: 1; }
-            50%, 99% { opacity: 0.3; }
+          @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+          }
+          @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
           }
         `}
       </style>
 
       <div style={{ position: "relative", zIndex: 1 }}>
-        {/* CCTV header */}
+        {/* Title with SpongeBob style */}
         <div
           style={{
-            marginBottom: "1rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "1rem",
+            marginBottom: "2rem",
+            animation: "wave 3s ease-in-out infinite",
           }}
         >
-          <div
+          <h1
             style={{
-              width: "15px",
-              height: "15px",
-              borderRadius: "50%",
-              background: "#ff0000",
-              boxShadow: "0 0 20px #ff0000",
-              animation: "blink-text 2s infinite",
-            }}
-          />
-          <p
-            style={{
-              color: "#ff0000",
-              fontSize: "1.2rem",
-              margin: 0,
+              color: "#FFD700",
+              fontSize: "3.5rem",
               fontWeight: "bold",
-              letterSpacing: "3px",
-              textShadow: "0 0 10px #ff0000",
+              margin: "0.5rem 0",
+              textShadow: "4px 4px 0 #FF6B35, -2px -2px 0 #004E89",
+              letterSpacing: "2px",
+              transform: "rotate(-2deg)",
             }}
           >
-            ● REC
+            🍍 비키니 시티 센서 🧽
+          </h1>
+          <p
+            style={{
+              color: "#FF6B35",
+              fontSize: "1.2rem",
+              fontWeight: "bold",
+              margin: "0.5rem 0",
+              textShadow: "2px 2px 0 #FFD700",
+              transform: "rotate(1deg)",
+            }}
+          >
+            "I'm ready! I'm ready! I'm ready!"
           </p>
         </div>
 
-        <h1
-          style={{
-            color: "#ffffff",
-            fontSize: "2rem",
-            fontWeight: "bold",
-            margin: "1rem 0",
-            textShadow: "0 0 10px rgba(255,255,255,0.5)",
-            letterSpacing: "2px",
-            animation: glitchActive ? "glitch 0.3s infinite" : "none",
-          }}
-        >
-          곤지암 정신병원 - 401호
-        </h1>
-
-        <p
-          style={{
-            color: "#888",
-            fontSize: "0.9rem",
-            marginBottom: "2rem",
-            letterSpacing: "2px",
-          }}
-        >
-          ESP32 SURVEILLANCE SYSTEM
-        </p>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            maxWidth: "600px",
-            margin: "0 auto 1.5rem",
-            color: "#888",
-            fontSize: "0.85rem",
-            fontFamily: "monospace",
-          }}
-        >
-          <span>CAM_04</span>
-          <span>{new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</span>
-        </div>
-
-        {/* Main monitor display */}
+        {/* Main pineapple house display */}
         <div
           style={{
             display: "inline-block",
-            padding: "2rem 3rem",
-            background: "rgba(20, 20, 20, 0.9)",
-            border: "3px solid #333",
-            borderRadius: "0",
-            boxShadow: "0 0 30px rgba(0,0,0,0.9), inset 0 0 50px rgba(0,0,0,0.5)",
-            minWidth: "550px",
+            padding: "3rem 3rem",
+            background: "linear-gradient(135deg, #FFEB3B 0%, #FFC107 100%)",
+            borderRadius: "50% 50% 45% 45%",
+            border: "8px solid #FF9800",
+            boxShadow: "0 15px 40px rgba(0,0,0,0.3), inset 0 -20px 30px rgba(255,152,0,0.3)",
+            maxWidth: "90vw",
+            width: "550px",
             position: "relative",
+            boxSizing: "border-box",
+            animation: "bounce 2s ease-in-out infinite",
           }}
         >
-          {/* Warning tape */}
+          {/* Pineapple texture diamonds */}
           <div
             style={{
               position: "absolute",
-              top: "-15px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "repeating-linear-gradient(45deg, #ff0000, #ff0000 10px, #ffff00 10px, #ffff00 20px)",
-              padding: "5px 20px",
-              fontSize: "0.7rem",
-              fontWeight: "bold",
-              color: "#000",
-              letterSpacing: "2px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.5)",
+              top: "20px",
+              left: "30px",
+              width: "40px",
+              height: "40px",
+              background: "#FFA726",
+              transform: "rotate(45deg)",
+              opacity: 0.3,
             }}
-          >
-            ⚠ RESTRICTED AREA ⚠
-          </div>
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "30px",
+              width: "40px",
+              height: "40px",
+              background: "#FFA726",
+              transform: "rotate(45deg)",
+              opacity: 0.3,
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "40px",
+              left: "50px",
+              width: "35px",
+              height: "35px",
+              background: "#FFA726",
+              transform: "rotate(45deg)",
+              opacity: 0.3,
+            }}
+          />
 
           <div
             style={{
               marginBottom: "2rem",
               paddingBottom: "2rem",
-              borderBottom: "1px solid #333",
+              borderBottom: "4px dashed #FF9800",
             }}
           >
             <p
               style={{
-                fontSize: "0.75rem",
-                color: "#ff0000",
+                fontSize: "1rem",
+                color: "#D84315",
                 marginBottom: "0.8rem",
                 fontWeight: "bold",
                 letterSpacing: "2px",
-                textShadow: "0 0 5px #ff0000",
+                textTransform: "uppercase",
+                textShadow: "2px 2px 0 #FFEB3B",
               }}
             >
-              [TEMPERATURE ANOMALY DETECTED]
+              🌡️ 온도온도온도!!
             </p>
             <p
               style={{
-                fontSize: "4rem",
-                color: glitchActive ? "#00ff00" : "#ffffff",
+                fontSize: "3.5rem",
+                color: "#D84315",
                 fontWeight: "bold",
                 margin: 0,
-                fontFamily: "'Courier New', monospace",
-                textShadow: glitchActive ? "0 0 20px #00ff00" : "0 0 10px rgba(255,255,255,0.5)",
-                animation: glitchActive ? "glitch 0.1s infinite" : "none",
+                textShadow: "3px 3px 0 #FFEB3B, -2px -2px 0 #FF9800",
+                animation: "wiggle 1s ease-in-out infinite",
               }}
             >
               {data.temperature.toFixed(1)}
-              <span style={{ fontSize: "1.5rem", marginLeft: "0.5rem", color: "#888" }}>
+              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#FF6B35" }}>
                 °C
               </span>
             </p>
@@ -294,34 +251,34 @@ export default function HomePage() {
             style={{
               marginBottom: "2rem",
               paddingBottom: "2rem",
-              borderBottom: "1px solid #333",
+              borderBottom: "4px dashed #FF9800",
             }}
           >
             <p
               style={{
-                fontSize: "0.75rem",
-                color: "#ff0000",
+                fontSize: "1rem",
+                color: "#1976D2",
                 marginBottom: "0.8rem",
                 fontWeight: "bold",
                 letterSpacing: "2px",
-                textShadow: "0 0 5px #ff0000",
+                textTransform: "uppercase",
+                textShadow: "2px 2px 0 #FFEB3B",
               }}
             >
-              [HUMIDITY LEVEL CRITICAL]
+              💧 습도습도습도!!
             </p>
             <p
               style={{
-                fontSize: "4rem",
-                color: glitchActive ? "#00ff00" : "#ffffff",
+                fontSize: "3.5rem",
+                color: "#1976D2",
                 fontWeight: "bold",
                 margin: 0,
-                fontFamily: "'Courier New', monospace",
-                textShadow: glitchActive ? "0 0 20px #00ff00" : "0 0 10px rgba(255,255,255,0.5)",
-                animation: glitchActive ? "glitch 0.1s infinite" : "none",
+                textShadow: "3px 3px 0 #FFEB3B, -2px -2px 0 #4FC3F7",
+                animation: "wiggle 1.2s ease-in-out infinite",
               }}
             >
               {data.humidity.toFixed(1)}
-              <span style={{ fontSize: "1.5rem", marginLeft: "0.5rem", color: "#888" }}>
+              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#0288D1" }}>
                 %
               </span>
             </p>
@@ -330,25 +287,25 @@ export default function HomePage() {
           <div>
             <p
               style={{
-                fontSize: "0.75rem",
-                color: "#ff0000",
+                fontSize: "1rem",
+                color: "#7B1FA2",
                 marginBottom: "0.8rem",
                 fontWeight: "bold",
                 letterSpacing: "2px",
-                textShadow: "0 0 5px #ff0000",
+                textTransform: "uppercase",
+                textShadow: "2px 2px 0 #FFEB3B",
               }}
             >
-              [PARANORMAL ACTIVITY INDEX]
+              ⚡ 아날로그로그로그!!
             </p>
             <p
               style={{
-                fontSize: "4rem",
-                color: glitchActive ? "#00ff00" : "#ffffff",
+                fontSize: "3.5rem",
+                color: "#7B1FA2",
                 fontWeight: "bold",
                 margin: 0,
-                fontFamily: "'Courier New', monospace",
-                textShadow: glitchActive ? "0 0 20px #00ff00" : "0 0 10px rgba(255,255,255,0.5)",
-                animation: glitchActive ? "glitch 0.1s infinite" : "none",
+                textShadow: "3px 3px 0 #FFEB3B, -2px -2px 0 #BA68C8",
+                animation: "wiggle 1.4s ease-in-out infinite",
               }}
             >
               {data.analog}
@@ -356,34 +313,93 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Warning message */}
+        {/* Gary the snail timestamp */}
         <div
           style={{
-            marginTop: "2rem",
+            marginTop: "2.5rem",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "1rem",
             padding: "1rem 2rem",
-            background: "rgba(255, 0, 0, 0.1)",
-            border: "2px solid #ff0000",
-            display: "inline-block",
-            maxWidth: "500px",
+            background: "linear-gradient(135deg, #FFB6C1, #FF69B4)",
+            borderRadius: "50px",
+            border: "4px solid #FF1493",
+            boxShadow: "0 5px 20px rgba(255,20,147,0.3)",
           }}
         >
-          <p style={{ color: "#ff0000", fontSize: "0.85rem", margin: 0, lineHeight: 1.6 }}>
-            ⚠️ WARNING: Multiple sensor anomalies detected in Room 401<br/>
-            DO NOT ENTER AFTER DARK
+          <div
+            style={{
+              width: "40px",
+              height: "35px",
+              background: "linear-gradient(135deg, #FF69B4, #FF1493)",
+              borderRadius: "50% 50% 50% 0",
+              position: "relative",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "-8px",
+                left: "10px",
+                width: "8px",
+                height: "15px",
+                background: "#FF1493",
+                borderRadius: "50% 50% 0 0",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: "-8px",
+                right: "10px",
+                width: "8px",
+                height: "15px",
+                background: "#FF1493",
+                borderRadius: "50% 50% 0 0",
+              }}
+            />
+          </div>
+          <p style={{ color: "#8B008B", fontSize: "1rem", margin: 0, fontWeight: "bold" }}>
+            마지막 갱신: {new Date().toLocaleTimeString()}
           </p>
         </div>
 
         <p
           style={{
             marginTop: "1.5rem",
-            color: "#444",
-            fontSize: "0.75rem",
-            fontFamily: "monospace",
-            animation: "blink-text 3s infinite",
+            color: "#004E89",
+            fontSize: "1.1rem",
+            fontWeight: "bold",
+            textShadow: "2px 2px 0 #FFD700",
           }}
         >
-          Last contact with research team: [SIGNAL LOST]
+          "Ahahaha! Gary, look at this data!"
         </p>
+
+        {/* Jellyfish decoration */}
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            animation: "bubble-float1 5s ease-in-out infinite",
+          }}
+        >
+          <div
+            style={{
+              width: "60px",
+              height: "50px",
+              background: "radial-gradient(circle at 40% 40%, rgba(255,182,193,0.9), rgba(255,105,180,0.6))",
+              borderRadius: "50% 50% 50% 50%",
+              position: "relative",
+              boxShadow: "0 0 20px rgba(255,105,180,0.5)",
+            }}
+          >
+            <div style={{ position: "absolute", bottom: "-20px", left: "15px", width: "3px", height: "20px", background: "rgba(255,105,180,0.6)" }} />
+            <div style={{ position: "absolute", bottom: "-25px", left: "25px", width: "3px", height: "25px", background: "rgba(255,105,180,0.6)" }} />
+            <div style={{ position: "absolute", bottom: "-20px", left: "35px", width: "3px", height: "20px", background: "rgba(255,105,180,0.6)" }} />
+          </div>
+        </div>
       </div>
     </main>
   );
