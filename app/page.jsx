@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const [data, setData] = useState({ temperature: 0, humidity: 0, analog: 0, ultrasonic: 0 });
+  const [data, setData] = useState({ temperature: 0, humidity: 0, distance: 0 });
 
   async function fetchData() {
     try {
@@ -284,13 +284,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div
-            style={{
-              marginBottom: "2rem",
-              paddingBottom: "2rem",
-              borderBottom: "4px dashed #FF9800",
-            }}
-          >
+          <div>
             <p
               style={{
                 fontSize: "1rem",
@@ -314,38 +308,10 @@ export default function HomePage() {
                 animation: "wiggle 1.3s ease-in-out infinite",
               }}
             >
-              {data.ultrasonic.toFixed(1)}
+              {data.distance.toFixed(1)}
               <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#D84315" }}>
                 cm
               </span>
-            </p>
-          </div>
-
-          <div>
-            <p
-              style={{
-                fontSize: "1rem",
-                color: "#7B1FA2",
-                marginBottom: "0.8rem",
-                fontWeight: "bold",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                textShadow: "2px 2px 0 #FFEB3B",
-              }}
-            >
-              ⚡ 아날로그로그로그!!
-            </p>
-            <p
-              style={{
-                fontSize: "3.5rem",
-                color: "#7B1FA2",
-                fontWeight: "bold",
-                margin: 0,
-                textShadow: "3px 3px 0 #FFEB3B, -2px -2px 0 #BA68C8",
-                animation: "wiggle 1.4s ease-in-out infinite",
-              }}
-            >
-              {data.analog}
             </p>
           </div>
         </div>
