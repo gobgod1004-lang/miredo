@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const [data, setData] = useState({ temperature: 0, humidity: 0, distance: 0 });
+  const [data, setData] = useState({
+    temperature: 0,
+    humidity: 0,
+    distance: 0,
+    waterVolume: 0,
+  });
 
   async function fetchData() {
     try {
@@ -11,7 +16,6 @@ export default function HomePage() {
       if (!res.ok) throw new Error("Failed to fetch");
       const json = await res.json();
       setData(json);
-      console.log(setData);
     } catch (err) {
       console.error(err);
     }
@@ -35,7 +39,7 @@ export default function HomePage() {
         overflow: "hidden",
       }}
     >
-      {/* Bubbles everywhere! */}
+      {/* Bubbles */}
       <div
         style={{
           position: "absolute",
@@ -75,19 +79,6 @@ export default function HomePage() {
           animation: "bubble-float3 7s ease-in-out infinite",
         }}
       />
-      <div
-        style={{
-          position: "absolute",
-          top: "30%",
-          right: "30%",
-          width: "35px",
-          height: "35px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(173,216,230,0.4))",
-          boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1)",
-          animation: "bubble-float1 9s ease-in-out infinite 1s",
-        }}
-      />
 
       <style>
         {`
@@ -123,13 +114,7 @@ export default function HomePage() {
       </style>
 
       <div style={{ position: "relative", zIndex: 1 }}>
-        {/* Title with SpongeBob style */}
-        <div
-          style={{
-            marginBottom: "2rem",
-            animation: "wave 3s ease-in-out infinite",
-          }}
-        >
+        <div style={{ marginBottom: "2rem", animation: "wave 3s ease-in-out infinite" }}>
           <h1
             style={{
               color: "#FFD700",
@@ -157,7 +142,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Main pineapple house display */}
+        {/* 센서 카드 */}
         <div
           style={{
             display: "inline-block",
@@ -173,51 +158,8 @@ export default function HomePage() {
             animation: "bounce 2s ease-in-out infinite",
           }}
         >
-          {/* Pineapple texture diamonds */}
-          <div
-            style={{
-              position: "absolute",
-              top: "20px",
-              left: "30px",
-              width: "40px",
-              height: "40px",
-              background: "#FFA726",
-              transform: "rotate(45deg)",
-              opacity: 0.3,
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              top: "20px",
-              right: "30px",
-              width: "40px",
-              height: "40px",
-              background: "#FFA726",
-              transform: "rotate(45deg)",
-              opacity: 0.3,
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: "40px",
-              left: "50px",
-              width: "35px",
-              height: "35px",
-              background: "#FFA726",
-              transform: "rotate(45deg)",
-              opacity: 0.3,
-            }}
-          />
-
-          <div
-            style={{
-              marginBottom: "2rem",
-              paddingBottom: "2rem",
-              borderBottom: "4px dashed #FF9800",
-            }}
-          >
+          {/* 온도 */}
+          <div style={{ marginBottom: "2rem", paddingBottom: "2rem", borderBottom: "4px dashed #FF9800" }}>
             <p
               style={{
                 fontSize: "1rem",
@@ -229,7 +171,7 @@ export default function HomePage() {
                 textShadow: "2px 2px 0 #FFEB3B",
               }}
             >
-              🌡️ 온도온도온도!!
+              🌡️ 온도
             </p>
             <p
               style={{
@@ -242,19 +184,12 @@ export default function HomePage() {
               }}
             >
               {data.temperature.toFixed(1)}
-              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#FF6B35" }}>
-                °C
-              </span>
+              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#FF6B35" }}>°C</span>
             </p>
           </div>
 
-          <div
-            style={{
-              marginBottom: "2rem",
-              paddingBottom: "2rem",
-              borderBottom: "4px dashed #FF9800",
-            }}
-          >
+          {/* 습도 */}
+          <div style={{ marginBottom: "2rem", paddingBottom: "2rem", borderBottom: "4px dashed #FF9800" }}>
             <p
               style={{
                 fontSize: "1rem",
@@ -266,7 +201,7 @@ export default function HomePage() {
                 textShadow: "2px 2px 0 #FFEB3B",
               }}
             >
-              💧 습도습도습도!!
+              💧 습도
             </p>
             <p
               style={{
@@ -279,13 +214,12 @@ export default function HomePage() {
               }}
             >
               {data.humidity.toFixed(1)}
-              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#0288D1" }}>
-                %
-              </span>
+              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#0288D1" }}>%</span>
             </p>
           </div>
 
-          <div>
+          {/* 거리 */}
+          <div style={{ marginBottom: "2rem", paddingBottom: "2rem", borderBottom: "4px dashed #FF9800" }}>
             <p
               style={{
                 fontSize: "1rem",
@@ -297,7 +231,7 @@ export default function HomePage() {
                 textShadow: "2px 2px 0 #FFEB3B",
               }}
             >
-              📏 초음파 거리!!
+              📏 초음파 거리
             </p>
             <p
               style={{
@@ -310,98 +244,38 @@ export default function HomePage() {
               }}
             >
               {data.distance.toFixed(1)}
-              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#D84315" }}>
-                cm
-              </span>
+              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#D84315" }}>cm</span>
             </p>
           </div>
-        </div>
 
-        {/* Gary the snail timestamp */}
-        <div
-          style={{
-            marginTop: "2.5rem",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "1rem",
-            padding: "1rem 2rem",
-            background: "linear-gradient(135deg, #FFB6C1, #FF69B4)",
-            borderRadius: "50px",
-            border: "4px solid #FF1493",
-            boxShadow: "0 5px 20px rgba(255,20,147,0.3)",
-          }}
-        >
-          <div
-            style={{
-              width: "40px",
-              height: "35px",
-              background: "linear-gradient(135deg, #FF69B4, #FF1493)",
-              borderRadius: "50% 50% 50% 0",
-              position: "relative",
-            }}
-          >
-            <div
+          {/* 남은 물 부피 */}
+          <div>
+            <p
               style={{
-                position: "absolute",
-                top: "-8px",
-                left: "10px",
-                width: "8px",
-                height: "15px",
-                background: "#FF1493",
-                borderRadius: "50% 50% 0 0",
+                fontSize: "1rem",
+                color: "#008080",
+                marginBottom: "0.8rem",
+                fontWeight: "bold",
+                letterSpacing: "2px",
+                textTransform: "uppercase",
+                textShadow: "2px 2px 0 #00CED1",
               }}
-            />
-            <div
+            >
+              💧 남은 물 부피
+            </p>
+            <p
               style={{
-                position: "absolute",
-                top: "-8px",
-                right: "10px",
-                width: "8px",
-                height: "15px",
-                background: "#FF1493",
-                borderRadius: "50% 50% 0 0",
+                fontSize: "3.5rem",
+                color: "#008080",
+                fontWeight: "bold",
+                margin: 0,
+                textShadow: "3px 3px 0 #00CED1, -2px -2px 0 #20B2AA",
+                animation: "wiggle 1.4s ease-in-out infinite",
               }}
-            />
-          </div>
-          <p style={{ color: "#8B008B", fontSize: "1rem", margin: 0, fontWeight: "bold" }}>
-            마지막 갱신: {new Date().toLocaleTimeString()}
-          </p>
-        </div>
-
-        <p
-          style={{
-            marginTop: "1.5rem",
-            color: "#004E89",
-            fontSize: "1.1rem",
-            fontWeight: "bold",
-            textShadow: "2px 2px 0 #FFD700",
-          }}
-        >
-          "Ahahaha! Gary, look at this data!"
-        </p>
-
-        {/* Jellyfish decoration */}
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            animation: "bubble-float1 5s ease-in-out infinite",
-          }}
-        >
-          <div
-            style={{
-              width: "60px",
-              height: "50px",
-              background: "radial-gradient(circle at 40% 40%, rgba(255,182,193,0.9), rgba(255,105,180,0.6))",
-              borderRadius: "50% 50% 50% 50%",
-              position: "relative",
-              boxShadow: "0 0 20px rgba(255,105,180,0.5)",
-            }}
-          >
-            <div style={{ position: "absolute", bottom: "-20px", left: "15px", width: "3px", height: "20px", background: "rgba(255,105,180,0.6)" }} />
-            <div style={{ position: "absolute", bottom: "-25px", left: "25px", width: "3px", height: "25px", background: "rgba(255,105,180,0.6)" }} />
-            <div style={{ position: "absolute", bottom: "-20px", left: "35px", width: "3px", height: "20px", background: "rgba(255,105,180,0.6)" }} />
+            >
+              {data.waterVolume.toFixed(1)}
+              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#20B2AA" }}>mL</span>
+            </p>
           </div>
         </div>
       </div>
