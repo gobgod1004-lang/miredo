@@ -11,6 +11,7 @@ export default function HomePage() {
       if (!res.ok) throw new Error("Failed to fetch");
       const json = await res.json();
       setData(json);
+      console.log(setData);
     } catch (err) {
       console.error(err);
     }
