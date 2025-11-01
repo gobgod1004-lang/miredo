@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [data, setData] = useState({ temperature: 0, humidity: 0, analog: 0, ultrasonic: 0 });
+  const [currentTime, setCurrentTime] = useState("");
 
   async function fetchData() {
     try {
@@ -17,9 +18,19 @@ export default function HomePage() {
   }
 
   useEffect(() => {
+    // 클라이언트 사이드에서만 시간 업데이트
+    setCurrentTime(new Date().toLocaleTimeString());
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
+
     fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return () => clearInterval(interval);
+    const dataInterval = setInterval(fetchData, 5000);
+    
+    return () => {
+      clearInterval(timeInterval);
+      clearInterval(dataInterval);
+    };
   }, []);
 
   return (
@@ -152,7 +163,7 @@ export default function HomePage() {
               transform: "rotate(1deg)",
             }}
           >
-            "I'm ready! I'm ready! I'm ready!"
+            &quot;I&apos;m ready! I&apos;m ready! I&apos;m ready!&quot;
           </p>
         </div>
 
@@ -397,7 +408,7 @@ export default function HomePage() {
             />
           </div>
           <p style={{ color: "#8B008B", fontSize: "1rem", margin: 0, fontWeight: "bold" }}>
-            마지막 갱신: {new Date().toLocaleTimeString()}
+            마지막 갱신: {currentTime || "로딩중..."}
           </p>
         </div>
 
@@ -410,7 +421,7 @@ export default function HomePage() {
             textShadow: "2px 2px 0 #FFD700",
           }}
         >
-          "Ahahaha! Gary, look at this data!"
+          &quot;Ahahaha! Gary, look at this data!&quot;
         </p>
 
         {/* Jellyfish decoration */}
