@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const [data, setData] = useState({ temperature: 0, humidity: 0, analog: 0, ultrasonic: 0 });
-  const [currentTime, setCurrentTime] = useState("");
+  const [data, setData] = useState({ temperature: 0, humidity: 0, analog: 0 });
 
   async function fetchData() {
     try {
@@ -18,19 +17,9 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    // 클라이언트 사이드에서만 시간 업데이트
-    setCurrentTime(new Date().toLocaleTimeString());
-    const timeInterval = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString());
-    }, 1000);
-
     fetchData();
-    const dataInterval = setInterval(fetchData, 5000);
-    
-    return () => {
-      clearInterval(timeInterval);
-      clearInterval(dataInterval);
-    };
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -163,7 +152,7 @@ export default function HomePage() {
               transform: "rotate(1deg)",
             }}
           >
-            &quot;I&apos;m ready! I&apos;m ready! I&apos;m ready!&quot;
+            "I'm ready! I'm ready! I'm ready!"
           </p>
         </div>
 
@@ -295,13 +284,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div
-            style={{
-              marginBottom: "2rem",
-              paddingBottom: "2rem",
-              borderBottom: "4px dashed #FF9800",
-            }}
-          >
+          <div>
             <p
               style={{
                 fontSize: "1rem",
@@ -326,37 +309,6 @@ export default function HomePage() {
               }}
             >
               {data.analog}
-            </p>
-          </div>
-
-          <div>
-            <p
-              style={{
-                fontSize: "1rem",
-                color: "#FF6B00",
-                marginBottom: "0.8rem",
-                fontWeight: "bold",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                textShadow: "2px 2px 0 #FFEB3B",
-              }}
-            >
-              📡 초음파파파파!!
-            </p>
-            <p
-              style={{
-                fontSize: "3.5rem",
-                color: "#FF6B00",
-                fontWeight: "bold",
-                margin: 0,
-                textShadow: "3px 3px 0 #FFEB3B, -2px -2px 0 #FF8C00",
-                animation: "wiggle 1.6s ease-in-out infinite",
-              }}
-            >
-              {data.ultrasonic.toFixed(1)}
-              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#FF4500" }}>
-                cm
-              </span>
             </p>
           </div>
         </div>
@@ -408,7 +360,7 @@ export default function HomePage() {
             />
           </div>
           <p style={{ color: "#8B008B", fontSize: "1rem", margin: 0, fontWeight: "bold" }}>
-            마지막 갱신: {currentTime || "로딩중..."}
+            마지막 갱신: {new Date().toLocaleTimeString()}
           </p>
         </div>
 
@@ -421,7 +373,7 @@ export default function HomePage() {
             textShadow: "2px 2px 0 #FFD700",
           }}
         >
-          &quot;Ahahaha! Gary, look at this data!&quot;
+          "Ahahaha! Gary, look at this data!"
         </p>
 
         {/* Jellyfish decoration */}
