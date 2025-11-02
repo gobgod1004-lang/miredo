@@ -8,6 +8,7 @@ export default function HomePage() {
     humidity: 0,
     distance: 0,
     waterVolume: 0,
+    magnetAttached: true,
   });
 
   async function fetchData() {
@@ -27,255 +28,119 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
+  const getWaterPercentage = () => {
+    return ((data.waterVolume / 362) * 100).toFixed(0);
+  };
+
   return (
-    <main
-      style={{
-        fontFamily: "'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive",
-        padding: "2rem",
-        textAlign: "center",
-        background: "linear-gradient(180deg, #87CEEB 0%, #4FB4E8 50%, #2E8BC0 100%)",
-        minHeight: "100vh",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Bubbles */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: "10%",
-          width: "40px",
-          height: "40px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(173,216,230,0.4))",
-          boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1)",
-          animation: "bubble-float1 6s ease-in-out infinite",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          right: "15%",
-          width: "60px",
-          height: "60px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(173,216,230,0.4))",
-          boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1)",
-          animation: "bubble-float2 8s ease-in-out infinite",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "20%",
-          left: "20%",
-          width: "50px",
-          height: "50px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(173,216,230,0.4))",
-          boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1)",
-          animation: "bubble-float3 7s ease-in-out infinite",
-        }}
-      />
-
-      <style>
-        {`
-          @keyframes bubble-float1 {
-            0% { transform: translateY(0) scale(1); opacity: 0.7; }
-            50% { transform: translateY(-100px) scale(1.1); opacity: 0.9; }
-            100% { transform: translateY(-200px) scale(0.8); opacity: 0; }
-          }
-          @keyframes bubble-float2 {
-            0% { transform: translateY(0) scale(1); opacity: 0.7; }
-            50% { transform: translateY(-120px) scale(1.15); opacity: 0.9; }
-            100% { transform: translateY(-250px) scale(0.7); opacity: 0; }
-          }
-          @keyframes bubble-float3 {
-            0% { transform: translateY(0) scale(1); opacity: 0.7; }
-            50% { transform: translateY(-90px) scale(1.05); opacity: 0.9; }
-            100% { transform: translateY(-180px) scale(0.9); opacity: 0; }
-          }
-          @keyframes wave {
-            0%, 100% { transform: rotate(-2deg); }
-            50% { transform: rotate(2deg); }
-          }
-          @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-          }
-          @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
-          }
-        `}
-      </style>
-
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <div style={{ marginBottom: "2rem", animation: "wave 3s ease-in-out infinite" }}>
-          <h1
-            style={{
-              color: "#FFD700",
-              fontSize: "3.5rem",
-              fontWeight: "bold",
-              margin: "0.5rem 0",
-              textShadow: "4px 4px 0 #FF6B35, -2px -2px 0 #004E89",
-              letterSpacing: "2px",
-              transform: "rotate(-2deg)",
-            }}
-          >
-            🍍 비키니 시티 센서 🧽
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+      <div className="max-w-4xl mx-auto">
+        {/* 헤더 */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-slate-800 mb-2">
+            센서 모니터링
           </h1>
-          <p
-            style={{
-              color: "#FF6B35",
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-              margin: "0.5rem 0",
-              textShadow: "2px 2px 0 #FFD700",
-              transform: "rotate(1deg)",
-            }}
-          >
-            "I'm ready! I'm ready! I'm ready!"
-          </p>
+          <p className="text-slate-500">실시간 환경 및 수위 데이터</p>
         </div>
 
-        {/* 센서 카드 */}
-        <div
-          style={{
-            display: "inline-block",
-            padding: "3rem 3rem",
-            background: "linear-gradient(135deg, #FFEB3B 0%, #FFC107 100%)",
-            borderRadius: "50% 50% 45% 45%",
-            border: "8px solid #FF9800",
-            boxShadow: "0 15px 40px rgba(0,0,0,0.3), inset 0 -20px 30px rgba(255,152,0,0.3)",
-            maxWidth: "90vw",
-            width: "550px",
-            position: "relative",
-            boxSizing: "border-box",
-            animation: "bounce 2s ease-in-out infinite",
-          }}
-        >
+        {/* 자석 센서 상태 */}
+        <div className="mb-6">
+          <div
+            className={`p-4 rounded-lg border-2 ${
+              data.magnetAttached
+                ? "bg-green-50 border-green-300"
+                : "bg-red-50 border-red-300"
+            } transition-colors duration-300`}
+          >
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-2xl">
+                {data.magnetAttached ? "🧲" : "⚠️"}
+              </span>
+              <span className="font-semibold text-lg">
+                {data.magnetAttached
+                  ? "컵 감지됨 - 측정 중"
+                  : "컵 없음 - 측정 대기"}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* 센서 카드들 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {/* 온도 */}
-          <div style={{ marginBottom: "2rem", paddingBottom: "2rem", borderBottom: "4px dashed #FF9800" }}>
-            <p
-              style={{
-                fontSize: "1rem",
-                color: "#D84315",
-                marginBottom: "0.8rem",
-                fontWeight: "bold",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                textShadow: "2px 2px 0 #FFEB3B",
-              }}
-            >
-              🌡️ 온도
-            </p>
-            <p
-              style={{
-                fontSize: "3.5rem",
-                color: "#D84315",
-                fontWeight: "bold",
-                margin: 0,
-                textShadow: "3px 3px 0 #FFEB3B, -2px -2px 0 #FF9800",
-                animation: "wiggle 1s ease-in-out infinite",
-              }}
-            >
+          <div className="bg-white rounded-xl shadow-md p-6 border border-slate-200">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-slate-600 font-medium">온도</span>
+              <span className="text-2xl">🌡️</span>
+            </div>
+            <div className="text-3xl font-bold text-slate-800">
               {data.temperature.toFixed(1)}
-              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#FF6B35" }}>°C</span>
-            </p>
+              <span className="text-lg text-slate-500 ml-1">°C</span>
+            </div>
           </div>
 
           {/* 습도 */}
-          <div style={{ marginBottom: "2rem", paddingBottom: "2rem", borderBottom: "4px dashed #FF9800" }}>
-            <p
-              style={{
-                fontSize: "1rem",
-                color: "#1976D2",
-                marginBottom: "0.8rem",
-                fontWeight: "bold",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                textShadow: "2px 2px 0 #FFEB3B",
-              }}
-            >
-              💧 습도
-            </p>
-            <p
-              style={{
-                fontSize: "3.5rem",
-                color: "#1976D2",
-                fontWeight: "bold",
-                margin: 0,
-                textShadow: "3px 3px 0 #FFEB3B, -2px -2px 0 #4FC3F7",
-                animation: "wiggle 1.2s ease-in-out infinite",
-              }}
-            >
+          <div className="bg-white rounded-xl shadow-md p-6 border border-slate-200">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-slate-600 font-medium">습도</span>
+              <span className="text-2xl">💧</span>
+            </div>
+            <div className="text-3xl font-bold text-slate-800">
               {data.humidity.toFixed(1)}
-              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#0288D1" }}>%</span>
-            </p>
+              <span className="text-lg text-slate-500 ml-1">%</span>
+            </div>
           </div>
 
           {/* 거리 */}
-          <div style={{ marginBottom: "2rem", paddingBottom: "2rem", borderBottom: "4px dashed #FF9800" }}>
-            <p
-              style={{
-                fontSize: "1rem",
-                color: "#FF6B35",
-                marginBottom: "0.8rem",
-                fontWeight: "bold",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                textShadow: "2px 2px 0 #FFEB3B",
-              }}
-            >
-              📏 초음파 거리
-            </p>
-            <p
-              style={{
-                fontSize: "3.5rem",
-                color: "#FF6B35",
-                fontWeight: "bold",
-                margin: 0,
-                textShadow: "3px 3px 0 #FFEB3B, -2px -2px 0 #FF9800",
-                animation: "wiggle 1.3s ease-in-out infinite",
-              }}
-            >
+          <div className="bg-white rounded-xl shadow-md p-6 border border-slate-200">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-slate-600 font-medium">측정 거리</span>
+              <span className="text-2xl">📏</span>
+            </div>
+            <div className="text-3xl font-bold text-slate-800">
               {data.distance.toFixed(1)}
-              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#D84315" }}>cm</span>
-            </p>
+              <span className="text-lg text-slate-500 ml-1">cm</span>
+            </div>
           </div>
 
-          {/* 남은 물 부피 */}
-          <div>
-            <p
-              style={{
-                fontSize: "1rem",
-                color: "#008080",
-                marginBottom: "0.8rem",
-                fontWeight: "bold",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                textShadow: "2px 2px 0 #00CED1",
-              }}
-            >
-              💧 남은 물 부피
-            </p>
-            <p
-              style={{
-                fontSize: "3.5rem",
-                color: "#008080",
-                fontWeight: "bold",
-                margin: 0,
-                textShadow: "3px 3px 0 #00CED1, -2px -2px 0 #20B2AA",
-                animation: "wiggle 1.4s ease-in-out infinite",
-              }}
-            >
+          {/* 물 부피 */}
+          <div className="bg-white rounded-xl shadow-md p-6 border border-slate-200">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-slate-600 font-medium">물 부피</span>
+              <span className="text-2xl">💦</span>
+            </div>
+            <div className="text-3xl font-bold text-slate-800">
               {data.waterVolume.toFixed(1)}
-              <span style={{ fontSize: "1.8rem", marginLeft: "0.5rem", color: "#20B2AA" }}>mL</span>
-            </p>
+              <span className="text-lg text-slate-500 ml-1">mL</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 물 양 게이지 */}
+        <div className="bg-white rounded-xl shadow-md p-6 border border-slate-200">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-slate-700 font-semibold text-lg">
+              수위 게이지
+            </span>
+            <span className="text-slate-600 font-medium">
+              {getWaterPercentage()}%
+            </span>
+          </div>
+          <div className="w-full bg-slate-200 rounded-full h-8 overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all duration-500 flex items-center justify-end pr-3"
+              style={{ width: `${getWaterPercentage()}%` }}
+            >
+              {parseInt(getWaterPercentage()) > 10 && (
+                <span className="text-white font-semibold text-sm">
+                  {data.waterVolume.toFixed(0)} mL
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="flex justify-between text-xs text-slate-500 mt-2">
+            <span>0 mL</span>
+            <span>362 mL</span>
           </div>
         </div>
       </div>
