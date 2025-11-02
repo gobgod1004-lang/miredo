@@ -13,6 +13,7 @@ export async function POST(req) {
   try {
     const body = await req.json();
     const { temperature, humidity, distance, waterVolume, magnetAttached } = body;
+    console.log(body);
 
     if (typeof temperature === "number") sensorData.temperature = temperature;
     if (typeof humidity === "number") sensorData.humidity = humidity;
